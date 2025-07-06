@@ -79,6 +79,7 @@
             border-radius: 99px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             backdrop-filter: blur(5px);
+            z-index: 50;
         }
         .nav-button {
             background-color: var(--green-medium);
@@ -124,6 +125,7 @@
             border-radius: 1rem;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
             transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
         }
         .image-card:hover {
             transform: perspective(1000px) rotateY(-5deg) rotateX(5deg) scale(1.05);
@@ -165,6 +167,61 @@
         .stat-card:hover .stat-icon {
             transform: scale(1.2);
         }
+        /* ESTILOS PARA EL LIGHTBOX */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        .lightbox.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .lightbox-content {
+            position: relative;
+            max-width: 80%;
+            max-height: 80%;
+            transform: scale(0.8);
+            transition: transform 0.4s ease;
+        }
+        .lightbox.show .lightbox-content {
+            transform: scale(1);
+        }
+        .lightbox-content img {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 8px;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            color: var(--dark-text);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
         /* Media Queries para Responsividad */
         @media (min-width: 768px) {
             .slide {
@@ -193,10 +250,10 @@
             </div>
         </div>
 
-        <!-- Diapositiva 2: El Éxito Actual (CORREGIDA) -->
+        <!-- Diapositiva 2: El Éxito Actual -->
         <div class="slide slide-2-bg">
             <div class="flex flex-col justify-center h-full">
-                <h1 class="text-3xl md:text-4xl slide-title font-bold mb-8">Nuestros Eventos Hoy: Un Éxito Comprobado</h1>
+                <h1 class="text-3xl md:text-4xl lg:text-5xl slide-title font-bold mb-8">Nuestros Eventos Hoy: Un Éxito Comprobado</h1>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-3xl" style="perspective: 1500px;">
                     <div class="slide-content stat-card">
                         <div class="stat-icon text-4xl md:text-5xl mb-3" style="color: var(--accent-gold);">👥</div>
@@ -241,14 +298,14 @@
         <div class="slide">
             <h1 class="slide-content text-3xl md:text-5xl slide-title font-bold mb-8">Paso 1: Inscripción y Confirmación Digital</h1>
             <div class="grid md:grid-cols-2 gap-8 w-full max-w-5xl">
-                <div class="slide-content text-center"><h3 class="text-xl md:text-2xl font-bold mb-4">Formulario Oficial</h3><div class="image-card"><img src="https://raw.githubusercontent.com/EdddGaar/SIDEC/main/imagenes/formulario.png" alt="Captura del Formulario" class="rounded-lg w-full"></div></div>
+                <div class="slide-content text-center"><h3 class="text-xl md:text-2xl font-bold mb-4">Formulario Oficial</h3><div class="image-card"><img src="https://raw.githubusercontent.com/EdddGaar/SIDEC/main/formulario.png" alt="Captura del Formulario" class="rounded-lg w-full"></div></div>
                 <div class="slide-content text-center"><h3 class="text-xl md:text-2xl font-bold mb-4">Confirmación con QR</h3><div class="image-card mx-auto max-w-[250px]"><img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=SIDEC-101-Zinacantepec&color=004236&bgcolor=ffffff&qzone=1" alt="Ejemplo de Código QR" class="rounded-lg w-full"></div></div>
             </div>
         </div>
         <div class="slide">
             <h1 class="slide-content text-3xl md:text-5xl slide-title font-bold mb-8">Paso 2: Check-in y ¡A Correr!</h1>
             <div class="grid md:grid-cols-2 gap-8 w-full max-w-5xl items-center">
-                <div class="slide-content text-center"><h3 class="text-xl md:text-2xl font-bold mb-4">Registro en Tiempo Real</h3><div class="image-card"><img src="https://raw.githubusercontent.com/EdddGaar/SIDEC/main/imagenes/sheet.png" alt="Captura de la Hoja de Cálculo" class="rounded-lg w-full"></div></div>
+                <div class="slide-content text-center"><h3 class="text-xl md:text-2xl font-bold mb-4">Registro en Tiempo Real</h3><div class="image-card"><img src="https://raw.githubusercontent.com/EdddGaar/SIDEC/main/sheet.png" alt="Captura de la Hoja de Cálculo" class="rounded-lg w-full"></div></div>
                 <div class="slide-content text-center"><div class="text-5xl md:text-6xl mb-4" style="color: var(--green-dark);">⏱️</div><h3 class="text-xl md:text-2xl font-bold">Check-in de 3 Segundos</h3><p class="text-base md:text-lg mt-2 text-gray-600">Un voluntario con un smartphone es todo lo que se necesita.</p></div>
             </div>
         </div>
@@ -256,7 +313,7 @@
             <h1 class="slide-content text-3xl md:text-5xl slide-title font-bold mb-8">Paso 3: Reconocimiento y Lealtad</h1>
             <div class="grid md:grid-cols-2 gap-8 w-full max-w-5xl items-center">
                  <div class="slide-content text-center"><div class="text-5xl md:text-6xl mb-4" style="color: var(--green-dark);">🏆</div><h3 class="text-xl md:text-2xl font-bold">Certificado Profesional</h3><p class="text-base md:text-lg mt-2 text-gray-600">Con un solo clic, el sistema genera y envía un recuerdo personalizado.</p></div>
-                <div class="slide-content text-center"><h3 class="text-xl md:text-2xl font-bold mb-4">Ejemplo de Certificado</h3><div class="image-card"><img src="https://raw.githubusercontent.com/EdddGaar/SIDEC/main/imagenes/certificado.png" alt="Captura del Certificado" class="rounded-lg w-full"></div></div>
+                <div class="slide-content text-center"><h3 class="text-xl md:text-2xl font-bold mb-4">Ejemplo de Certificado</h3><div class="image-card"><img src="https://raw.githubusercontent.com/EdddGaar/SIDEC/main/certificado.png" alt="Captura del Certificado" class="rounded-lg w-full"></div></div>
             </div>
         </div>
 
@@ -281,6 +338,14 @@
         </div>
     </div>
 
+    <!-- Lightbox Structure -->
+    <div id="lightbox" class="lightbox">
+        <span id="lightbox-close" class="lightbox-close">&times;</span>
+        <div class="lightbox-content">
+            <img id="lightbox-img" src="" alt="Vista ampliada">
+        </div>
+    </div>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const slides = document.querySelectorAll('.slide');
@@ -289,6 +354,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const slideCounter = document.getElementById('slide-counter');
     let currentSlide = 0;
     const totalSlides = slides.length;
+
+    // Lightbox functionality
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxClose = document.getElementById('lightbox-close');
+    const clickableImages = document.querySelectorAll('.image-card');
+
+    clickableImages.forEach(card => {
+        card.addEventListener('click', () => {
+            const imgSrc = card.querySelector('img').src;
+            lightboxImg.src = imgSrc;
+            lightbox.classList.add('show');
+        });
+    });
+
+    const closeLightbox = () => {
+        lightbox.classList.remove('show');
+    };
+
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+            closeLightbox();
+        }
+    });
+
 
     function createFallingShapes(containerId, shapeType, spawnSide = 'full') {
         const container = document.getElementById(containerId);
