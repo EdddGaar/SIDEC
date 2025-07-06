@@ -45,7 +45,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            padding: 2rem; /* Padding base para móviles */
+            padding: 2rem; /* Padding base */
+            padding-bottom: 6rem; /* Padding inferior extra para no chocar con la navegación */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -68,7 +69,7 @@
         }
         .navigation {
             position: absolute;
-            bottom: 1rem;
+            bottom: 1.5rem; /* Un poco más arriba */
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -150,7 +151,7 @@
         .stat-card {
             background-color: white;
             border-radius: 1rem;
-            padding: 1.5rem; /* Padding ajustado */
+            padding: 1.5rem;
             box-shadow: 0 10px 20px rgba(0,0,0,0.08);
             border: 1px solid #eee;
             transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -167,7 +168,6 @@
         .stat-card:hover .stat-icon {
             transform: scale(1.2);
         }
-        /* ESTILOS PARA EL LIGHTBOX */
         .lightbox {
             position: fixed;
             top: 0;
@@ -221,11 +221,10 @@
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-
-        /* Media Queries para Responsividad */
         @media (min-width: 768px) {
             .slide {
                 padding: 4rem 6rem;
+                padding-bottom: 7rem;
             }
         }
         @media (max-width: 767px) {
