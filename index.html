@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentación Avanzada: Plataforma SIDEC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        :root {
+            --green-dark: #004236;
+            --green-medium: #00695C;
+            --green-light: #4DB6AC;
+            --accent-gold: #D4AF37;
+            --light-bg: #fdfdfd;
+            --dark-text: #212529;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        .presentation-container {
+            width: 100%;
+            max-width: 1200px;
+            height: auto;
+            aspect-ratio: 16 / 9;
+            background-color: white;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 2rem; /* Padding base para móviles */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.95);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+        .slide-title {
+            font-family: 'Oswald', sans-serif;
+            color: var(--green-dark);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        .navigation {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background-color: rgba(255,255,255,0.9);
+            padding: 0.5rem 1rem;
+            border-radius: 99px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+        }
+        .nav-button {
+            background-color: var(--green-medium);
+            color: white;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .nav-button:hover {
+            transform: scale(1.15);
+            background-color: var(--green-dark);
+        }
+        .nav-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+        .slide-counter {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.25rem;
+            min-width: 50px;
+            text-align: center;
+        }
+        .cascading-shape {
+            position: absolute;
+            opacity: 0.15;
+            will-change: transform;
+        }
+        .feature-card {
+            transition: all 0.3s ease-in-out;
+        }
+        .feature-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 25px -5px rgba(0, 66, 54, 0.2), 0 10px 10px -5px rgba(0, 66, 54, 0.1);
+        }
+        .image-card {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .image-card:hover {
+            transform: perspective(1000px) rotateY(-5deg) rotateX(5deg) scale(1.05);
+            box-shadow: 0 25px 40px rgba(0,0,0,0.15);
+        }
+        .thank-you-text {
+            color: var(--green-dark);
+            animation: glow 2.5s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--green-light), 0 0 20px var(--green-light);
+            }
+            to {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--green-light), 0 0 40px var(--green-light);
+            }
+        }
+        .slide-2-bg {
+            background-image: radial-gradient(circle at center, #e5e5e5 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .stat-card {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 1.5rem; /* Padding ajustado */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            border: 1px solid #eee;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-bottom: 4px solid transparent;
+        }
+        .stat-card:hover {
+            transform: perspective(1200px) rotateX(5deg) rotateY(-5deg) scale(1.05);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.2);
+            border-bottom-color: var(--accent-gold);
+        }
+        .stat-card .stat-icon {
+            transition: transform 0.4s ease;
+        }
+        .stat-card:hover .stat-icon {
+            transform: scale(1.2);
+        }
+        /* Media Queries para Responsividad */
+        @media (min-width: 768px) {
+            .slide {
+                padding: 4rem 6rem;
+            }
+        }
+        @media (max-width: 767px) {
+            .presentation-container {
+                aspect-ratio: auto;
+                min-height: 70vh;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="presentation-container">
+
+        <!-- Diapositiva 1: Portada -->
+        <div class="slide active">
+            <div id="hero-animation-container" class="absolute inset-0 z-0 overflow-hidden"></div>
+            <div class="relative z-10">
+                <h1 class="text-5xl md:text-7xl lg:text-8xl slide-title font-bold">Plataforma SIDEC</h1>
+                <h2 class="text-xl md:text-2xl lg:text-3xl mt-4">Sistema Digital para Eventos y Carreras de Zinacantepec</h2>
+                <p class="text-lg md:text-xl mt-8 text-gray-600">Propuesta de Innovación Tecnológica</p>
+            </div>
+        </div>
+
+        <!-- Diapositiva 2: El Éxito Actual (CORREGIDA) -->
+        <div class="slide slide-2-bg">
+            <div class="flex flex-col justify-center h-full">
+                <h1 class="text-3xl md:text-4xl slide-title font-bold mb-8">Nuestros Eventos Hoy: Un Éxito Comprobado</h1>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-3xl" style="perspective: 1500px;">
+                    <div class="slide-content stat-card">
+                        <div class="stat-icon text-4xl md:text-5xl mb-3" style="color: var(--accent-gold);">👥</div>
+                        <h3 class="text-lg md:text-xl font-bold">Convocatorias Actuales</h3>
+                        <p class="text-sm md:text-base mt-2 text-gray-600">Cientos de participantes se unen en cada evento.</p>
+                    </div>
+                    <div class="slide-content stat-card">
+                        <div class="stat-icon text-4xl md:text-5xl mb-3" style="color: var(--accent-gold);">⚙️</div>
+                        <h3 class="text-lg md:text-xl font-bold">Equipo Dedicado</h3>
+                        <p class="text-sm md:text-base mt-2 text-gray-600">Organización eficiente que asegura el éxito de cada carrera.</p>
+                    </div>
+                </div>
+                <p class="slide-content text-xl md:text-2xl font-bold mt-10">La pregunta es... <span style="color: var(--green-dark);">¿cómo lo llevamos al siguiente nivel?</span></p>
+            </div>
+        </div>
+
+        <!-- Diapositiva 3: Diagrama de Flujo -->
+        <div class="slide">
+             <h1 class="slide-content text-3xl md:text-5xl slide-title font-bold mb-8">Presentando la Plataforma SIDEC: Potenciando el Éxito</h1>
+             <div class="w-full max-w-6xl flex flex-col md:flex-row items-center justify-around">
+                <div class="slide-content feature-card text-center p-4 md:p-6 bg-white rounded-xl border-t-4 w-48 h-48 md:w-64 md:h-64 flex flex-col justify-center items-center" style="border-color: var(--green-medium);">
+                    <div class="mb-2 md:mb-4 text-4xl md:text-5xl" style="color: var(--green-medium);">📱</div>
+                    <h2 class="text-lg md:text-xl font-bold">Experiencia Digital</h2>
+                    <p class="mt-2 text-xs md:text-sm text-gray-600">Modernizamos la interacción con el corredor.</p>
+                </div>
+                <div class="slide-content transform md:rotate-0 rotate-90 text-3xl md:text-4xl" style="color: var(--accent-gold);">→</div>
+                <div class="slide-content feature-card text-center p-4 md:p-6 bg-white rounded-xl border-t-4 w-48 h-48 md:w-64 md:h-64 flex flex-col justify-center items-center" style="border-color: var(--green-medium);">
+                     <div class="mb-2 md:mb-4 text-4xl md:text-5xl" style="color: var(--green-medium);">🚀</div>
+                    <h2 class="text-lg md:text-xl font-bold">Optimización de Flujo</h2>
+                    <p class="mt-2 text-xs md:text-sm text-gray-600">Agilizamos los procesos el día del evento.</p>
+                </div>
+                <div class="slide-content transform md:rotate-0 rotate-90 text-3xl md:text-4xl" style="color: var(--accent-gold);">→</div>
+                <div class="slide-content feature-card text-center p-4 md:p-6 bg-white rounded-xl border-t-4 w-48 h-48 md:w-64 md:h-64 flex flex-col justify-center items-center" style="border-color: var(--green-medium);">
+                    <div class="mb-2 md:mb-4 text-4xl md:text-5xl" style="color: var(--green-medium);">📊</div>
+                    <h2 class="text-lg md:text-xl font-bold">Datos Estratégicos</h2>
+                    <p class="mt-2 text-xs md:text-sm text-gray-600">Convertimos la participación en conocimiento.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 4, 5, 6 -->
+        <div class="slide">
+            <h1 class="slide-content text-3xl md:text-5xl slide-title font-bold mb-8">Paso 1: Inscripción y Confirmación Digital</h1>
+            <div class="grid md:grid-cols-2 gap-8 w-full max-w-5xl">
+                <div class="slide-content text-center"><h3 class="text-xl md:text-2xl font-bold mb-4">Formulario Oficial</h3><div class="image-card"><img src="https://raw.githubusercontent.com/EdddGaar/SIDEC/main/imagenes/formulario.png" alt="Captura del Formulario" class="rounded-lg w-full"></div></div>
+                <div class="slide-content text-center"><h3 class="text-xl md:text-2xl font-bold mb-4">Confirmación con QR</h3><div class="image-card mx-auto max-w-[250px]"><img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=SIDEC-101-Zinacantepec&color=004236&bgcolor=ffffff&qzone=1" alt="Ejemplo de Código QR" class="rounded-lg w-full"></div></div>
+            </div>
+        </div>
+        <div class="slide">
+            <h1 class="slide-content text-3xl md:text-5xl slide-title font-bold mb-8">Paso 2: Check-in y ¡A Correr!</h1>
+            <div class="grid md:grid-cols-2 gap-8 w-full max-w-5xl items-center">
+                <div class="slide-content text-center"><h3 class="text-xl md:text-2xl font-bold mb-4">Registro en Tiempo Real</h3><div class="image-card"><img src="https://raw.githubusercontent.com/EdddGaar/SIDEC/main/imagenes/sheet.png" alt="Captura de la Hoja de Cálculo" class="rounded-lg w-full"></div></div>
+                <div class="slide-content text-center"><div class="text-5xl md:text-6xl mb-4" style="color: var(--green-dark);">⏱️</div><h3 class="text-xl md:text-2xl font-bold">Check-in de 3 Segundos</h3><p class="text-base md:text-lg mt-2 text-gray-600">Un voluntario con un smartphone es todo lo que se necesita.</p></div>
+            </div>
+        </div>
+        <div class="slide">
+            <h1 class="slide-content text-3xl md:text-5xl slide-title font-bold mb-8">Paso 3: Reconocimiento y Lealtad</h1>
+            <div class="grid md:grid-cols-2 gap-8 w-full max-w-5xl items-center">
+                 <div class="slide-content text-center"><div class="text-5xl md:text-6xl mb-4" style="color: var(--green-dark);">🏆</div><h3 class="text-xl md:text-2xl font-bold">Certificado Profesional</h3><p class="text-base md:text-lg mt-2 text-gray-600">Con un solo clic, el sistema genera y envía un recuerdo personalizado.</p></div>
+                <div class="slide-content text-center"><h3 class="text-xl md:text-2xl font-bold mb-4">Ejemplo de Certificado</h3><div class="image-card"><img src="https://raw.githubusercontent.com/EdddGaar/SIDEC/main/imagenes/certificado.png" alt="Captura del Certificado" class="rounded-lg w-full"></div></div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 7: Cierre -->
+        <div class="slide">
+            <div id="closing-animation-container" class="absolute inset-0 z-0 overflow-hidden"></div>
+            <div class="relative z-10">
+                <h1 class="text-7xl md:text-8xl font-bold thank-you-text">Gracias</h1>
+                <h2 class="text-3xl md:text-4xl mt-8">Preguntas y Siguientes Pasos</h2>
+                <p class="text-xl md:text-2xl mt-8 max-w-3xl text-gray-600">Proponemos iniciar con una **prueba piloto** para demostrar los beneficios de la **Plataforma SIDEC**.</p>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button id="prev-btn" class="nav-button">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+            </button>
+            <div id="slide-counter" class="slide-counter">1 / 7</div>
+            <button id="next-btn" class="nav-button">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+            </button>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const slideCounter = document.getElementById('slide-counter');
+    let currentSlide = 0;
+    const totalSlides = slides.length;
+
+    function createFallingShapes(containerId, shapeType, spawnSide = 'full') {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        while (container.firstChild) {
+            container.removeChild(container.firstChild);
+        }
+
+        const colors = ['var(--green-medium)', 'var(--accent-gold)', 'var(--green-light)'];
+        const shapeCount = 25;
+
+        for (let i = 0; i < shapeCount; i++) {
+            const shape = document.createElement('div');
+            shape.classList.add('cascading-shape');
+            if (shapeType === 'circle') {
+                shape.style.borderRadius = '50%';
+            } else {
+                shape.style.borderRadius = '8px';
+            }
+            container.appendChild(shape);
+
+            const size = gsap.utils.random(50, 150);
+            let xPosition;
+            if (spawnSide === 'right') {
+                xPosition = gsap.utils.random(container.offsetWidth / 2, container.offsetWidth);
+            } else if (spawnSide === 'left') {
+                xPosition = gsap.utils.random(0, container.offsetWidth / 2);
+            } else {
+                xPosition = gsap.utils.random(0, container.offsetWidth);
+            }
+
+            gsap.set(shape, {
+                width: size,
+                height: size,
+                x: xPosition,
+                y: gsap.utils.random(-200, -150),
+                backgroundColor: gsap.utils.random(colors),
+                rotation: gsap.utils.random(0, 360)
+            });
+
+            gsap.to(shape, {
+                y: container.offsetHeight + 200,
+                rotation: '+=360',
+                duration: gsap.utils.random(15, 25),
+                repeat: -1,
+                delay: gsap.utils.random(0, 15),
+                ease: 'none'
+            });
+        }
+    }
+
+    function animateSlide(index) {
+        const activeSlide = slides[index];
+        const elements = activeSlide.querySelectorAll('.slide-content');
+        gsap.fromTo(elements.length ? elements : activeSlide.children, 
+            { opacity: 0, y: 40 }, 
+            { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out', delay: 0.3 }
+        );
+    }
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.toggle('active', i === index);
+        });
+        
+        slideCounter.textContent = `${index + 1} / ${totalSlides}`;
+        prevBtn.disabled = index === 0;
+        nextBtn.disabled = index === totalSlides - 1;
+        animateSlide(index);
+    }
+
+    prevBtn.addEventListener('click', () => {
+        if (currentSlide > 0) {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentSlide < totalSlides - 1) {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') nextBtn.click();
+        if (e.key === 'ArrowLeft') prevBtn.click();
+    });
+
+    showSlide(currentSlide);
+    createFallingShapes('hero-animation-container', 'rect');
+    createFallingShapes('closing-animation-container', 'circle', 'right');
+});
+</script>
+
+</body>
+</html>
